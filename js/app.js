@@ -1,5 +1,10 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x,y, speed) {
+    //debugger;
+    this.x = x
+    this.y = y
+    this.speed = speed
+
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -11,6 +16,11 @@ var Enemy = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    //this.x++
+    this.x = this.x+10*this.speed 
+    if (this.x > ctx.canvas.width){
+        this.x = Math.random()*-100
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -24,7 +34,18 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function (x,y){
+    this.x = x
+    this.y = y
 
+    this.sprite = 'images/char-boy.png';
+
+
+};
+Player.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -44,3 +65,24 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+Player.prototype.handleInput= function(direction){
+    switch (direction){
+        case 'up':
+          this.y -= 80;
+           break;
+         case 'down':
+             this.y += 80;
+             break;
+          case 'left':
+            this.x -= 80;
+            break;
+            case'right':
+            this.x += 80;
+            break;
+    }
+
+}
+
+var allEnemies = [new Enemy(100, 50, Math.random()), new Enemy(100, 100, Math.random()), new Enemy (100, 200, Math.random())]
+var player = new Player (250, 350);
